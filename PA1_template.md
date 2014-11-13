@@ -240,7 +240,7 @@ summary(dfnew)
 ##  Min.   :  0.00   2012-10-01:  288   Min.   :   0.0  
 ##  1st Qu.:  0.00   2012-10-02:  288   1st Qu.: 588.8  
 ##  Median :  0.00   2012-10-03:  288   Median :1177.5  
-##  Mean   : 37.35   2012-10-04:  288   Mean   :1177.5  
+##  Mean   : 37.41   2012-10-04:  288   Mean   :1177.5  
 ##  3rd Qu.: 27.00   2012-10-05:  288   3rd Qu.:1766.2  
 ##  Max.   :806.00   2012-10-06:  288   Max.   :2355.0  
 ##                   (Other)   :15840                   
@@ -292,8 +292,8 @@ print(fig3) # Print out Histogram of Total Daily Steps:
   
 
 
-The mean number of daily steps is 10757.1.  
-The median number of daily steps is 10686.
+The mean number of daily steps is 10774.1.  
+The median number of daily steps is 10765.
   
 
 
@@ -343,8 +343,8 @@ summary(dfnew$dayfactor)
 Create new daily activity pattern plots, this time separately for Weekdays/Weekends:
 
 ```r
-grouped_table <- group_by(dfnew[,c(1,4,5)],timefactor,dayfactor) # Group steps by time factor
-plot4_data <- summarise_each(grouped_table,funs(sum(., na.rm=TRUE))) # Total steps per day
+grouped_table <- group_by(dfnew[,c(1,4,5)],timefactor,dayfactor) # Group steps by time and day factors
+plot4_data <- summarise_each(grouped_table,funs(mean)) # Mean steps per interval/day combination
 
 plot4_data$time <- ISOdate(2001, 1, 1, 0, tz = "GMT") + as.numeric(plot4_data$timefactor)*5*60 # Factor no good for labeling x-axis, so generate a POSIXct object
 

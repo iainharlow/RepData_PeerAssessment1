@@ -281,8 +281,8 @@ summary(dfnew$dayfactor)
 
 Create new daily activity pattern plots, this time separately for Weekdays/Weekends:
 ```{r}
-grouped_table <- group_by(dfnew[,c(1,4,5)],timefactor,dayfactor) # Group steps by time factor
-plot4_data <- summarise_each(grouped_table,funs(sum(., na.rm=TRUE))) # Total steps per day
+grouped_table <- group_by(dfnew[,c(1,4,5)],timefactor,dayfactor) # Group steps by time and day factors
+plot4_data <- summarise_each(grouped_table,funs(mean)) # Mean steps per interval/day combination
 
 plot4_data$time <- ISOdate(2001, 1, 1, 0, tz = "GMT") + as.numeric(plot4_data$timefactor)*5*60 # Factor no good for labeling x-axis, so generate a POSIXct object
 
