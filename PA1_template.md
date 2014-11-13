@@ -203,7 +203,8 @@ The total number of missing step values is 2304.
   
 
 
-R code to impute new NAs. Overall we are adopting an approach similar to that of [mean imputation](http://en.wikipedia.org/wiki/Imputation_(statistics)), but to reintroduce some of the variance that loses we're going to randomly generate the data from a distribution around the mean that we choose (specifically, we'll use poisson):
+R code to impute new NAs. Overall we are adopting an approach similar to that of [mean imputation][1], but to reintroduce some of the variance that loses we're going to randomly generate the data from a distribution around the mean that we choose (specifically, we'll use poisson):
+[1]: http://en.wikipedia.org/wiki/Imputation_(statistics) "mean imputation"
 
 ```r
 # Logic: Steps in any given interval is an integer >=0, so a poisson distribution
@@ -239,7 +240,7 @@ summary(dfnew)
 ##  Min.   :  0.00   2012-10-01:  288   Min.   :   0.0  
 ##  1st Qu.:  0.00   2012-10-02:  288   1st Qu.: 588.8  
 ##  Median :  0.00   2012-10-03:  288   Median :1177.5  
-##  Mean   : 37.39   2012-10-04:  288   Mean   :1177.5  
+##  Mean   : 37.35   2012-10-04:  288   Mean   :1177.5  
 ##  3rd Qu.: 27.00   2012-10-05:  288   3rd Qu.:1766.2  
 ##  Max.   :806.00   2012-10-06:  288   Max.   :2355.0  
 ##                   (Other)   :15840                   
@@ -291,8 +292,8 @@ print(fig3) # Print out Histogram of Total Daily Steps:
   
 
 
-The mean number of daily steps is 10767.9.  
-The median number of daily steps is 10765.
+The mean number of daily steps is 10757.1.  
+The median number of daily steps is 10686.
   
 
 
