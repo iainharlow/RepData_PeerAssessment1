@@ -19,6 +19,8 @@ Figure 4 - the panel plot - will be different depending on the system it's const
 I've generally scaled steps to show "Mean steps per *minute*", rather than total steps, or steps per 5-minute-interval, because that seems to me to be a more meaningful and generalisable statistic.
 
 I've also used inline R script to answer some of the specific questions. That is, I've calculated a statistic such as mean daily steps, then called it in a non-code section (within a sentence). This is instead of printing the value to the console from the code sections, as others may have done.
+
+
 =================================
 
 
@@ -79,6 +81,8 @@ head(tidydf)
 ## 5    NA 2012-10-01       20  0.333333333333333
 ## 6    NA 2012-10-01       25  0.416666666666667
 ```
+
+
 =================================
   
 
@@ -127,6 +131,8 @@ Using inline R script to print variables directly:
 
 The mean number of daily steps is 9354.2.  
 The median number of daily steps is 10395.
+
+
 =================================
   
 
@@ -188,6 +194,8 @@ maxtotal_interval_end <- strftime(plot2_data$time[which.max(plot2_check$steps)+1
 
 
 The interval between 08:40 and 08:45 included the greatest total number of steps: 10927.
+
+
 =================================
   
 
@@ -245,7 +253,7 @@ summary(dfnew)
 ##  Min.   :  0.00   2012-10-01:  288   Min.   :   0.0  
 ##  1st Qu.:  0.00   2012-10-02:  288   1st Qu.: 588.8  
 ##  Median :  0.00   2012-10-03:  288   Median :1177.5  
-##  Mean   : 37.39   2012-10-04:  288   Mean   :1177.5  
+##  Mean   : 37.36   2012-10-04:  288   Mean   :1177.5  
 ##  3rd Qu.: 27.00   2012-10-05:  288   3rd Qu.:1766.2  
 ##  Max.   :806.00   2012-10-06:  288   Max.   :2355.0  
 ##                   (Other)   :15840                   
@@ -297,8 +305,8 @@ print(fig3) # Print out Histogram of Total Daily Steps:
   
 
 
-The mean number of daily steps is 10768.6.  
-The median number of daily steps is 10784.
+The mean number of daily steps is 10758.4.  
+The median number of daily steps is 10692.
   
 
 
@@ -307,6 +315,8 @@ We can see that the mean has moved higher, very close to the median. The histogr
 Note too, that this highlights a limitation of the imputation procedure (actually the data): Because we have no information about how active these 8 days were compared to the others (we only used interval means remember, as the missing value pattern precluded using local or daily means), we ended up giving each of the days a number of steps very close to the global mean. In other words, we haven't accounted for any of the between-day variance. 
 
 Now, if there were some more intervals available on each of those days, we could compute daily step rates based on the the step rate *within those intervals*, taking into account the average rate in that interval. With a decent number of non-NA intervals in each day this imputation procedure would become much more accurate than simply using the mean interval procedure alone. But we simply don't have sufficient data for that, so the best procedure would actually be to remove the 8 days with missing data I should think. I leave this imperfect imputation as is, since it illustrates the limitations of the data set quite well. But don't do this in real life! Imputation only works better than discarding if you can infer sufficient information about the values you are imputing, and the structure of the data sometimes precludes this (as in this case). And of course it can be much worse if you use an overly simple method like we have, and fail to take some sources of variance into account. It's clear from the histograms that we've ended up artificially reducing the variance of our data. 
+
+
 =================================
 
 
