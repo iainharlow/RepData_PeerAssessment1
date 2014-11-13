@@ -23,7 +23,8 @@ I've also used inline R script to answer some of the specific questions. That is
 
 
 Load useful libraries (loading text other than warnings suppressed for clarity):
-```{r,results="hide"}
+
+```r
 suppressMessages(library(plyr)) # For working with tidy data frames
 suppressMessages(library(dplyr)) # For working with tidy data frames
 suppressMessages(library(scales)) # For plotting 
@@ -33,7 +34,8 @@ suppressMessages(library(ggplot2)) # For plotting
 
 
 Clear and set workspace, load the data:
-```{r}
+
+```r
 rm(list = ls())
 wd<-"C:/Users/Iain/Documents/GitHub/RepData_PeerAssessment1"
 filename<-"/activity.csv"
@@ -44,7 +46,8 @@ df<-read.csv(paste(wd,filename,sep=""))
 
 
 Format the date/interval variables and prepare for dplyr:
-```{r}
+
+```r
 hours<-df$interval %/% 100
 mins<-df$interval %% 100
 time<-hours+mins/60 # Convert to hours. Never actually used, since this gets converted to a factor anyhow, but this labelling is less confusing for me when visually inspecting the data!
@@ -55,8 +58,21 @@ tidydf<-tbl_df(df) # Creates tidy data frame for use with dplyr
 
 
 Glance at the formatted tidy data frame:
-```{r}
+
+```r
 head(tidydf)
+```
+
+```
+## Source: local data frame [6 x 4]
+## 
+##   steps       date interval         timefactor
+## 1    NA 2012-10-01        0                  0
+## 2    NA 2012-10-01        5 0.0833333333333333
+## 3    NA 2012-10-01       10  0.166666666666667
+## 4    NA 2012-10-01       15               0.25
+## 5    NA 2012-10-01       20  0.333333333333333
+## 6    NA 2012-10-01       25  0.416666666666667
 ```
   
   
@@ -67,8 +83,8 @@ head(tidydf)
 
 
 R code to generate required plot and variables:
-```{r}
 
+```r
 grouped_table <- group_by(tidydf[1:2],date) # Group steps by date
 plot1_data <- summarise_each(grouped_table,funs(sum(., na.rm=TRUE))) # Total steps per day
 
@@ -93,16 +109,19 @@ meansteps_nice <- sprintf("%.1f", meansteps) # For nicer printing, create
 
 
 Histogram of total daily steps:
-```{r}
+
+```r
 print(fig1) # Print out Histogram of Total Daily Steps:
 ```
+
+![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
   
 
 
 Using inline R script to print variables directly:  
 
-The mean number of daily steps is `r meansteps_nice`.  
-The median number of daily steps is `r mediansteps`.
+The mean number of daily steps is 9354.2.  
+The median number of daily steps is 10395.
   
   
 
@@ -112,7 +131,8 @@ The median number of daily steps is `r mediansteps`.
 
 
 R code to generate required plot and variables:
-```{r}
+
+```r
 grouped_table <- group_by(tidydf[c(1,4)],timefactor) # Group steps by time factor
 plot2_data <- summarise_each(grouped_table,funs(mean(., na.rm = TRUE))) # Mean steps per interval
 plot2_data$time <- ISOdate(2001, 1, 1, 0, tz = "GMT") + as.numeric(plot2_data$timefactor)*5*60 # Factor no good for labeling x-axis, so generate a POSIXct object
@@ -138,19 +158,23 @@ max_interval_end <- strftime(plot2_data$time[which.max(plot2_data$steps)+1],form
 
 
 Average daily activity pattern:
-```{r}
+
+```r
 print(fig2) # Print out Time Series of average steps per minute:
 ```
+
+![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
   
   
 
 
 
-The interval with the greatest number of daily steps is between `r max_interval_start` and `r max_interval_end`, with a mean step rate of `r max_steprate_nice` steps per minute. Now technically the question asks for greatest total number of steps, which missing values might cause to differ from the (more meaningful!) greatest step rate. So quickly check it:
+The interval with the greatest number of daily steps is between 08:40 and 08:45, with a mean step rate of 41.2 steps per minute. Now technically the question asks for greatest total number of steps, which missing values might cause to differ from the (more meaningful!) greatest step rate. So quickly check it:
   
 
 
-```{r}
+
+```r
 plot2_check <- summarise_each(grouped_table,funs(sum(., na.rm = TRUE))) # Total steps per interval
 max_steptotal <- max(plot2_check$steps,na.rm=TRUE)
 maxtotal_interval_start <- strftime(plot2_data$time[which.max(plot2_check$steps)],format="%H:%M",tz="GMT")
@@ -158,7 +182,7 @@ maxtotal_interval_end <- strftime(plot2_data$time[which.max(plot2_check$steps)+1
 ```
 
 
-The interval between `r maxtotal_interval_start` and `r maxtotal_interval_end` included the greatest total number of steps: `r max_steptotal`.
+The interval between 08:40 and 08:45 included the greatest total number of steps: 10927.
   
   
 
@@ -168,19 +192,20 @@ The interval between `r maxtotal_interval_start` and `r maxtotal_interval_end` i
 
 
 R code to count NAs:
-```{r}
+
+```r
 num_NAs <- sum(is.na(df$steps))
 ```
   
 
 
-The total number of missing step values is `r num_NAs`.  
+The total number of missing step values is 2304.  
   
 
 
-R code to impute new NAs. Overall we are adopting an approach similar to that of [mean imputation][1], but to reintroduce some of the variance that loses we're going to randomly generate the data from a distribution around the mean that we choose (specifically, we'll use poisson):
-[1]: http://en.wikipedia.org/wiki/Imputation_(statistics) "mean imputation"
-```{r}
+R code to impute new NAs. Overall we are adopting an approach similar to that of [mean imputation](http://en.wikipedia.org/wiki/Imputation_(statistics)), but to reintroduce some of the variance that loses we're going to randomly generate the data from a distribution around the mean that we choose (specifically, we'll use poisson):
+
+```r
 # Logic: Steps in any given interval is an integer >=0, so a poisson distribution
 # seems a fair way of imputing new data (of course the reality is more 
 # complicated, with a greater number of zeros, but we're staying simple).
@@ -208,12 +233,31 @@ dfnew<-tidydf[c(6,2,3,4)] #...with $imputed replacing $steps:
 
 summary(dfnew)
 ```
+
+```
+##     imputed               date          interval     
+##  Min.   :  0.00   2012-10-01:  288   Min.   :   0.0  
+##  1st Qu.:  0.00   2012-10-02:  288   1st Qu.: 588.8  
+##  Median :  0.00   2012-10-03:  288   Median :1177.5  
+##  Mean   : 37.39   2012-10-04:  288   Mean   :1177.5  
+##  3rd Qu.: 27.00   2012-10-05:  288   3rd Qu.:1766.2  
+##  Max.   :806.00   2012-10-06:  288   Max.   :2355.0  
+##                   (Other)   :15840                   
+##               timefactor   
+##  0                 :   61  
+##  0.0833333333333333:   61  
+##  0.166666666666667 :   61  
+##  0.25              :   61  
+##  0.333333333333333 :   61  
+##  0.416666666666667 :   61  
+##  (Other)           :17202
+```
   
 
 
 Now, if we repeat the histogram/mean/median calculation from earlier:
-```{r}
 
+```r
 grouped_table <- group_by(dfnew[1:2],date) # Group steps by date
 plot3_data <- summarise_each(grouped_table,funs(sum(., na.rm=TRUE))) # Total steps per day
 
@@ -238,14 +282,17 @@ meansteps_nice <- sprintf("%.1f", meansteps) # For nicer printing, create
 
 
 Histogram of total daily steps (after NAs imputed with new data):
-```{r}
+
+```r
 print(fig3) # Print out Histogram of Total Daily Steps:
 ```
+
+![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13-1.png) 
   
 
 
-The mean number of daily steps is `r meansteps_nice`.  
-The median number of daily steps is `r mediansteps`.
+The mean number of daily steps is 10767.9.  
+The median number of daily steps is 10765.
   
 
 
@@ -261,7 +308,8 @@ Now, if there were some more intervals available on each of those days, we could
   
 
 Let's construct a new factor variable in our data frame:
-```{r}
+
+```r
 #Get the day name for each observation:
 days <- weekdays(as.Date(dfnew$date))
 
@@ -274,13 +322,26 @@ dfnew$dayfactor <- as.factor(dfnew$dayfactor)
 
 # Check we have roughly the right proportions of each factor:
 levels(dfnew$dayfactor)
+```
+
+```
+## [1] "Weekday" "Weekend"
+```
+
+```r
 summary(dfnew$dayfactor)
+```
+
+```
+## Weekday Weekend 
+##   12960    4608
 ```
   
 
 
 Create new daily activity pattern plots, this time separately for Weekdays/Weekends:
-```{r}
+
+```r
 grouped_table <- group_by(dfnew[,c(1,4,5)],timefactor,dayfactor) # Group steps by time factor
 plot4_data <- summarise_each(grouped_table,funs(sum(., na.rm=TRUE))) # Total steps per day
 
@@ -303,9 +364,12 @@ fig4 <- fig4 + scale_x_datetime(breaks = date_breaks("4 hour"),
 
 
 Time series showing Daily Activity Pattern for Weekdays vs Weekends (after NAs imputed with new data):
-```{r}
+
+```r
 print(fig4) # Print out Daily Activity Patterns for Weekdays/Weekends
 ```
+
+![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png) 
   
 
 
