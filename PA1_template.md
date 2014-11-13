@@ -253,7 +253,7 @@ summary(dfnew)
 ##  Min.   :  0.00   2012-10-01:  288   Min.   :   0.0  
 ##  1st Qu.:  0.00   2012-10-02:  288   1st Qu.: 588.8  
 ##  Median :  0.00   2012-10-03:  288   Median :1177.5  
-##  Mean   : 37.36   2012-10-04:  288   Mean   :1177.5  
+##  Mean   : 37.34   2012-10-04:  288   Mean   :1177.5  
 ##  3rd Qu.: 27.00   2012-10-05:  288   3rd Qu.:1766.2  
 ##  Max.   :806.00   2012-10-06:  288   Max.   :2355.0  
 ##                   (Other)   :15840                   
@@ -305,8 +305,8 @@ print(fig3) # Print out Histogram of Total Daily Steps:
   
 
 
-The mean number of daily steps is 10758.4.  
-The median number of daily steps is 10692.
+The mean number of daily steps is 10753.6.  
+The median number of daily steps is 10697.
   
 
 
@@ -389,13 +389,13 @@ print(fig4) # Print out Daily Activity Patterns for Weekdays/Weekends
   
 
 
-The plots are presented side-by-side for easy comparison of y-values (step rates). From this, it's immediately clear that:
+The plots are presented stacked for comparison of activity distributions. From this, it's immediately clear that:
 
 - Activity begins later on weekends, generally around 8am instead of 6am. Lie in!
 - Activity ends later too, some weekends this person is up past 9pm! Crazy!
-- The peak at 8.40am is smaller in the weekend data, but it's still there: So if it's a commute then either this person is working some weekends, or they have some other regular morning acticity (jogging for example).
-- There's a peak around 7pm in the weekday plot that's not present at weekends, so perhaps that is the commute home. That is a long workday.
-- Activity generally appears to be much more homogenous during weekends, i.e. mean step rates are similar throughout the day. Be careful though, since we're looking at averaged data. It may simply be that weekdays are more predictable, i.e. the peaks and troughs occur at the same time each day and thus show up on the average plot. Activity could be just as 'spiky' during the weekends, but if it's less tightly scheduled the averaging would smooth it out. So we can't actually say too much about the distribution of activity across time without also plotting a measure of variance across days.
+- The peak at 8.40am is smaller in the weekend data, but it's still there: So if it's a commute then either this person is working some weekends, or they have some other regular morning activity (jogging for example).
+- There's a peak around 7pm in the weekday plot that's not present at weekends, so perhaps that is the commute home. That is a long workday, but the absence of a single peak like we see for the morning hints that they may sometimes go home earlier (e.g. at 4pm and 6pm).  
+- Activity generally appears to be much more homogenous during weekends, i.e. mean step rates are sustained throughout the day, and less concentrated in the mornings. Be careful though, since we're looking at averaged data. It may simply be that weekdays are more predictable, i.e. the peaks and troughs occur at the same time each day and thus show up on the average plot. Activity could be just as 'spiky' during the weekends, but if it's less tightly scheduled the averaging would smooth it out. So we can't actually say too much about the distribution of activity across time without also plotting a measure of variance across days.
   
   
 
