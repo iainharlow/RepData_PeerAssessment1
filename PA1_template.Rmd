@@ -20,6 +20,8 @@ I've generally scaled steps to show "Mean steps per *minute*", rather than total
 
 I've also used inline R script to answer some of the specific questions. That is, I've calculated a statistic such as mean daily steps, then called it in a non-code section (within a sentence). This is instead of printing the value to the console from the code sections, as others may have done.
 
+UPDATE: Using inline R script doesn't work with the MD file in github apparently. Which is strange and annoying! It works fine with the HTML from what I've seen. So I've also printed the calculated values to the console (inelegant, but there you are).
+
 
 =================================
 
@@ -108,11 +110,20 @@ print(fig1) # Print out Histogram of Total Daily Steps:
   
 
 
-Using inline R script to print variables directly:  
+Using inline R script to print variables directly doesn't seem to calculate in Markdown:  
 
 The mean number of daily steps is `r meansteps_nice`.  
 The median number of daily steps is `r mediansteps`.
 
+So here's a print out of the mean daily steps:
+```{r}
+print(meansteps_nice) # Mean daily steps
+```
+
+And the median daily steps:
+```{r}
+print(mediansteps) # Mean daily steps
+```
 
 =================================
   
@@ -157,7 +168,26 @@ print(fig2) # Print out Time Series of average steps per minute:
 
 
 
-The interval with the greatest number of daily steps is between `r max_interval_start` and `r max_interval_end`, with a mean step rate of `r max_steprate_nice` steps per minute. Now technically the question asks for greatest total number of steps, which missing values might cause to differ from the (more meaningful!) greatest step rate. So quickly check it:
+The interval with the greatest number of daily steps is between `r max_interval_start` and `r max_interval_end`, with a mean step rate of `r max_steprate_nice` steps per minute. Again, this doesn't print out the values when I look at the MD file in github, so...
+
+
+So here's a print out of the interval start time:
+```{r}
+print(max_interval_start) 
+```
+
+And the end time:
+```{r}
+print(max_interval_end) 
+```
+
+And the *per minute* step rate during this interval:
+```{r}
+print(max_steprate_nice) 
+```
+
+
+Now technically the question asks for greatest total number of steps, which missing values might cause to differ from the (more meaningful!) greatest step rate. So quickly check it:
   
 
 
@@ -169,7 +199,24 @@ maxtotal_interval_end <- strftime(plot2_data$time[which.max(plot2_check$steps)+1
 ```
 
 
-The interval between `r maxtotal_interval_start` and `r maxtotal_interval_end` included the greatest total number of steps: `r max_steptotal`.
+The interval between `r maxtotal_interval_start` and `r maxtotal_interval_end` included the greatest total number of steps: `r max_steptotal`. Once again, to deal with the failure to render as expected in .MD format...
+
+
+Interval start time:
+```{r}
+print(maxtotal_interval_start) 
+```
+
+Interval end time:
+```{r}
+print(maxtotal_interval_end) 
+```
+
+And the total number of steps during this interval:
+```{r}
+print(max_steptotal) 
+```
+
 
 
 =================================
@@ -187,8 +234,11 @@ num_NAs <- sum(is.na(df$steps))
   
 
 
-The total number of missing step values is `r num_NAs`.  
-  
+The total number of missing step values is `r num_NAs`. Or, printed directly:
+```{r}
+print(num_NAs)
+```
+
 
 
 R code to impute new NAs. Overall we are adopting an approach similar to that of [mean imputation][1], but to reintroduce some of the variance that loses we're going to randomly generate the data from a distribution around the mean that we choose (specifically, we'll use poisson):
@@ -259,6 +309,16 @@ print(fig3) # Print out Histogram of Total Daily Steps:
 
 The mean number of daily steps is `r meansteps_nice`.  
 The median number of daily steps is `r mediansteps`.
+
+Printing mean daily steps directly:
+```{r}
+print(meansteps_nice)
+```
+  
+And median daily steps:
+```{r}
+print(mediansteps)
+```
   
 
 

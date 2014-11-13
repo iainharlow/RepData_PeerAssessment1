@@ -20,6 +20,8 @@ I've generally scaled steps to show "Mean steps per *minute*", rather than total
 
 I've also used inline R script to answer some of the specific questions. That is, I've calculated a statistic such as mean daily steps, then called it in a non-code section (within a sentence). This is instead of printing the value to the console from the code sections, as others may have done.
 
+UPDATE: Using inline R script doesn't work with the MD file in github apparently. Which is strange and annoying! It works fine with the HTML from what I've seen. So I've also printed the calculated values to the console (inelegant, but there you are).
+
 
 =================================
 
@@ -127,11 +129,30 @@ print(fig1) # Print out Histogram of Total Daily Steps:
   
 
 
-Using inline R script to print variables directly:  
+Using inline R script to print variables directly doesn't seem to calculate in Markdown:  
 
 The mean number of daily steps is 9354.2.  
 The median number of daily steps is 10395.
 
+So here's a print out of the mean daily steps:
+
+```r
+print(meansteps_nice) # Mean daily steps
+```
+
+```
+## [1] "9354.2"
+```
+
+And the median daily steps:
+
+```r
+print(mediansteps) # Mean daily steps
+```
+
+```
+## [1] 10395
+```
 
 =================================
   
@@ -174,13 +195,47 @@ Average daily activity pattern:
 print(fig2) # Print out Time Series of average steps per minute:
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
+![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png) 
   
   
 
 
 
-The interval with the greatest number of daily steps is between 08:40 and 08:45, with a mean step rate of 41.2 steps per minute. Now technically the question asks for greatest total number of steps, which missing values might cause to differ from the (more meaningful!) greatest step rate. So quickly check it:
+The interval with the greatest number of daily steps is between 08:40 and 08:45, with a mean step rate of 41.2 steps per minute. Again, this doesn't print out the values when I look at the MD file in github, so...
+
+
+So here's a print out of the interval start time:
+
+```r
+print(max_interval_start) 
+```
+
+```
+## [1] "08:40"
+```
+
+And the end time:
+
+```r
+print(max_interval_end) 
+```
+
+```
+## [1] "08:45"
+```
+
+And the *per minute* step rate during this interval:
+
+```r
+print(max_steprate_nice) 
+```
+
+```
+## [1] "41.2"
+```
+
+
+Now technically the question asks for greatest total number of steps, which missing values might cause to differ from the (more meaningful!) greatest step rate. So quickly check it:
   
 
 
@@ -193,7 +248,39 @@ maxtotal_interval_end <- strftime(plot2_data$time[which.max(plot2_check$steps)+1
 ```
 
 
-The interval between 08:40 and 08:45 included the greatest total number of steps: 10927.
+The interval between 08:40 and 08:45 included the greatest total number of steps: 10927. Once again, to deal with the failure to render as expected in .MD format...
+
+
+Interval start time:
+
+```r
+print(maxtotal_interval_start) 
+```
+
+```
+## [1] "08:40"
+```
+
+Interval end time:
+
+```r
+print(maxtotal_interval_end) 
+```
+
+```
+## [1] "08:45"
+```
+
+And the total number of steps during this interval:
+
+```r
+print(max_steptotal) 
+```
+
+```
+## [1] 10927
+```
+
 
 
 =================================
@@ -212,8 +299,16 @@ num_NAs <- sum(is.na(df$steps))
   
 
 
-The total number of missing step values is 2304.  
-  
+The total number of missing step values is 2304. Or, printed directly:
+
+```r
+print(num_NAs)
+```
+
+```
+## [1] 2304
+```
+
 
 
 R code to impute new NAs. Overall we are adopting an approach similar to that of [mean imputation][1], but to reintroduce some of the variance that loses we're going to randomly generate the data from a distribution around the mean that we choose (specifically, we'll use poisson):
@@ -253,7 +348,7 @@ summary(dfnew)
 ##  Min.   :  0.00   2012-10-01:  288   Min.   :   0.0  
 ##  1st Qu.:  0.00   2012-10-02:  288   1st Qu.: 588.8  
 ##  Median :  0.00   2012-10-03:  288   Median :1177.5  
-##  Mean   : 37.34   2012-10-04:  288   Mean   :1177.5  
+##  Mean   : 37.41   2012-10-04:  288   Mean   :1177.5  
 ##  3rd Qu.: 27.00   2012-10-05:  288   3rd Qu.:1766.2  
 ##  Max.   :806.00   2012-10-06:  288   Max.   :2355.0  
 ##                   (Other)   :15840                   
@@ -301,12 +396,32 @@ Histogram of total daily steps (after NAs imputed with new data):
 print(fig3) # Print out Histogram of Total Daily Steps:
 ```
 
-![plot of chunk unnamed-chunk-13](figure/unnamed-chunk-13-1.png) 
+![plot of chunk unnamed-chunk-22](figure/unnamed-chunk-22-1.png) 
   
 
 
-The mean number of daily steps is 10753.6.  
-The median number of daily steps is 10697.
+The mean number of daily steps is 10773.6.  
+The median number of daily steps is 10849.
+
+Printing mean daily steps directly:
+
+```r
+print(meansteps_nice)
+```
+
+```
+## [1] "10773.6"
+```
+  
+And median daily steps:
+
+```r
+print(mediansteps)
+```
+
+```
+## [1] 10849
+```
   
 
 
@@ -385,7 +500,7 @@ Time series showing Daily Activity Pattern for Weekdays vs Weekends (after NAs i
 print(fig4) # Print out Daily Activity Patterns for Weekdays/Weekends
 ```
 
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png) 
+![plot of chunk unnamed-chunk-27](figure/unnamed-chunk-27-1.png) 
   
 
 
