@@ -12,7 +12,11 @@ output:
   
 
 
-A quick note: Please be aware that this (and other submissions) may end up with slightly different plots and conclusions to your own. This is because the instructions are not wholly unambiguous. For example, [there is some debate](https://class.coursera.org/repdata-008/forum/thread?thread_id=55) over what is meant by "ignoring" NAs in this assignment - I have taken it to mean removing NAs (na.rm=TRUE) when computing means/sums in the first part, in order to compare this approach with the later imputation method. But both are - statistically speaking - pretty terrible ideas with the NAs distributed as they are here, so if you come across someone who instead removes all the NAs in advance for part 1 - a much more justifiable approach, albeit not what I think the instructions strictly ask us to do - I would suggest not downgrading for that. Also, figure 4 - the panel plot - will be different depending on the system it's constructed in (I used ggplot, the example is lattice) and whether the panels are stacked or presented side-by-side. The example plot shows them stacked, which better displays the change in start time. I've chosen instead to display them side-by-side as I think the easier comparison of step rates (y-axis) is more informative and useful. I've also scaled steps to show "Mean steps per *minute*", rather than total steps, or per 5-minute-interval, again because that seems to me to be a more meaningful and generalisable statistic.
+A quick note: Please be aware that this (and other submissions) may end up with slightly different plots and conclusions to your own. This is because the instructions are not wholly unambiguous. For example, [there is some debate](https://class.coursera.org/repdata-008/forum/thread?thread_id=55) over what is meant by "ignoring" NAs in this assignment - I have taken it to mean removing NAs (na.rm=TRUE) when computing means/sums in the first part, in order to compare this approach with the later imputation method. But both are - statistically speaking - pretty terrible ideas with the NAs distributed as they are here, so if you come across someone who instead removes all the NAs in advance for part 1 - a much more justifiable approach, albeit not what I think the instructions strictly ask us to do - I would suggest not downgrading for that. 
+
+Figure 4 - the panel plot - will be different depending on the system it's constructed in (I used ggplot, the example is lattice) and whether the panels are stacked or presented side-by-side. The example plot, and mine, shows them stacked, which better displays the differences in relative activity distribution. Others may instead choose to display them side-by-side to allow easier comparison of absolute step rates; I think that's a legitimate choice. 
+
+I've generally scaled steps to show "Mean steps per *minute*", rather than total steps, or steps per 5-minute-interval, because that seems to me to be a more meaningful and generalisable statistic.
 
 I've also used inline R script to answer some of the specific questions. That is, I've calculated a statistic such as mean daily steps, then called it in a non-code section (within a sentence). This is instead of printing the value to the console from the code sections, as others may have done.
   
@@ -22,7 +26,7 @@ I've also used inline R script to answer some of the specific questions. That is
   
 
 
-Load useful libraries (loading text other than warnings suppressed for clarity):
+Load useful libraries (loading text suppressed for clarity):
 
 ```r
 suppressMessages(library(plyr)) # For working with tidy data frames
@@ -292,8 +296,8 @@ print(fig3) # Print out Histogram of Total Daily Steps:
   
 
 
-The mean number of daily steps is 10774.1.  
-The median number of daily steps is 10765.
+The mean number of daily steps is 10775.1.  
+The median number of daily steps is 10857.
   
 
 
@@ -349,7 +353,7 @@ plot4_data <- summarise_each(grouped_table,funs(mean)) # Mean steps per interval
 plot4_data$time <- ISOdate(2001, 1, 1, 0, tz = "GMT") + as.numeric(plot4_data$timefactor)*5*60 # Factor no good for labeling x-axis, so generate a POSIXct object
 
 # Create histogram using ggplot2 package:
-fig4 <- qplot(time,imputed/5,data=plot4_data,geom="line",facets=.~dayfactor)
+fig4 <- qplot(time,imputed/5,data=plot4_data,geom="line",facets= ~dayfactor.)
 # Note conversion to steps per minute for easier comparison with other data
 
 fig4 <- fig4 + labs(title = "Daily Activity Pattern: Weekdays vs Weekends") #Adjust plot
@@ -370,7 +374,9 @@ Time series showing Daily Activity Pattern for Weekdays vs Weekends (after NAs i
 print(fig4) # Print out Daily Activity Patterns for Weekdays/Weekends
 ```
 
-![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16-1.png) 
+```
+## Error in layout_base(data, vars, drop = drop): At least one layer must contain all variables used for facetting
+```
   
 
 
